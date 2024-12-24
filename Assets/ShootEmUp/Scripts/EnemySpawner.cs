@@ -30,6 +30,7 @@ namespace ShootEmUp
         private void Start()
         {
             _enemyPool = gameObject.AddComponent<EnemyPool>();
+            _enemyPool.InitializeEnemyPool(_enemiesTypes[0], _spline[Random.Range(0, _spline.Count)]);
         }
 
         private void Update()
