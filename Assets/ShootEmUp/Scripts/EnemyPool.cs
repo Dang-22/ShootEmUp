@@ -21,7 +21,7 @@ namespace ShootEmUp
         private void Start()
         {
             // new class to call builder
-            _enemyFactory = new EnemyFactory();
+            
         }
         /// <summary>
         /// Put all object to a pool
@@ -30,6 +30,7 @@ namespace ShootEmUp
         /// <param name="spline"></param>
         public void InitializeEnemyPool(EnemyType enemyType, SplineContainer spline)
         {
+            _enemyFactory = new EnemyFactory();
             for (int i = 0; i < PoolSize; i++)
             {
                 GameObject enemy = _enemyFactory.CreateEnemy(enemyType, spline);
@@ -38,7 +39,7 @@ namespace ShootEmUp
             }
         }
         /// <summary>
-        /// Get enemy out of the pool
+        /// Get enemy out of the pool or create it if not exist
         /// </summary>
         /// <param name="enemyType"></param>
         /// <param name="spline"></param>
