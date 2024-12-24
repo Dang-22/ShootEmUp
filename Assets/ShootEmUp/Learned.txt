@@ -1,0 +1,8 @@
+****object pooling, modified builder, abstract factory, Strategy
+****Player or enemy call the strategy's fire method to fire; fire method can be diff based on the type weapon strategy we create  
+****Spawner call the factory based on what can be expose or designer can setting like type, spline, etc => Factory call the builder
+to builder know what object should be build, setting the rest properties then spawn object => builder setting all the thing like spawn position, speed, and spawn the game object 
+++++Update++++ spawner call dequeue method to pull out the object in the pool; the enemy pool create enemy and put them in the pool, get and
+return them.
+   
+
