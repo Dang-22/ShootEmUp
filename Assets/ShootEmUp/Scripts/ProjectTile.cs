@@ -8,7 +8,8 @@ namespace ShootEmUp
         [SerializeField] private float _speed;
         [SerializeField] private GameObject _muzzlePrefab;
         [SerializeField] private GameObject _hitPrefab;
-        private Transform _parent;
+        [SerializeField] private float _lifeTimeInterval = 2f;
+        private float _lifeTimer;
         /// <summary>
         /// Set speed of the projecttile
         /// </summary>
@@ -17,31 +18,35 @@ namespace ShootEmUp
         {
             _speed = speed;
         }
-        /// <summary>
-        /// Set parent object 
-        /// </summary>
-        /// <param name="parent"></param>
-        public void SetParent(Transform parent)
-        {
-            _parent = parent;
-        }
 
         private void Start()
         {
-            //if muzzle prefab is not null then we spawn, set parent and destroy it based on custom condition
+            SpawnProjectile();
+        }
+
+        public void SpawnProjectile()
+        {
             if (_muzzlePrefab != null)
             {
-                var muzzleVFX = Instantiate(_muzzlePrefab, transform.position, Quaternion.identity);
-                muzzleVFX.transform.forward = gameObject.transform.forward;
-                muzzleVFX.transform.SetParent(_parent);
-                DestroyParticleSystem(muzzleVFX);
+                _muzzlePrefab.transform.forward = gameObject.transform.forward;
+                gameObject.transform.SetParent(ProjecttilePool.Instance.transform);
             }
         }
 
         private void Update()
         {
-            transform.SetParent(null);
             transform.position += transform.up * (_speed * Time.deltaTime);
+            ExpireProjectile();
+        }
+
+        private void ExpireProjectile()
+        {
+            _lifeTimer += Time.deltaTime;
+            if (_lifeTimer >= 1)
+            {
+                ProjecttilePool.Instance.Release(gameObject);
+                _lifeTimer = 0;
+            }
         }
 
         /// <summary>
@@ -53,10 +58,20 @@ namespace ShootEmUp
             if (_hitPrefab != null)
             {
                 ContactPoint contact = other.contacts[0];
-                var hitVFX = Instantiate(_hitPrefab, contact.point, Quaternion.identity);
-                DestroyParticleSystem(hitVFX);
+                var hitVFX = VFXPool.Instance.GetVFX(gameObject.transform);
+                var ps = hitVFX.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    ps = hitVFX.GetComponentInChildren<ParticleSystem>();
+                    ps.Play();
+                }
+                if (!ps.isPlaying)
+                {
+                    VFXPool.Instance.ReleaseVFX(hitVFX);
+                }
             }
-            Destroy(gameObject);
+            ProjecttilePool.Instance.Release(gameObject);
+            
         }
         /// <summary>
         /// Destroy muzzle VFX at the end of effect
@@ -69,7 +84,11 @@ namespace ShootEmUp
             {
                 ps = muzzleVFX.GetComponentInChildren<ParticleSystem>();
             }
-            Destroy(muzzleVFX, ps.main.duration);
+
+            if (ps.main.duration <= 0)
+            {
+                VFXPool.Instance.ReleaseVFX(muzzleVFX);
+            }
         }
     }
 }
