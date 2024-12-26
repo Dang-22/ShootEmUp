@@ -7,7 +7,7 @@ namespace ShootEmUp
     {
         [SerializeField] private int _damage = 10;
         [SerializeField] private float _fireRate = 0.5f;
-        [SerializeField] protected float _projecttileSpeed = 5f;
+        [SerializeField] protected float _projecttileSpeed = 1f;
         [SerializeField] protected float _projecttileLifetime = 4f;
         [SerializeField] protected GameObject _projectilePrefab;
         /// <summary>
@@ -22,7 +22,7 @@ namespace ShootEmUp
         /// <summary>
         /// Init Strategy
         /// </summary>
-        private void OnValidate()
+        private void Awake()
         {
             Damage = _damage;
             FireRate = _fireRate;
@@ -31,5 +31,6 @@ namespace ShootEmUp
         {
         }
         public abstract void Fire(Transform firePoint, LayerMask layer);
+
     }
 }
