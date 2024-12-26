@@ -13,12 +13,12 @@ namespace ShootEmUp
         /// <param name="layer"></param>
         public override void Fire(Transform firePoint, LayerMask layer)
         {
-            var projectile = Instantiate(_projectilePrefab, firePoint.position, firePoint.rotation);
-            projectile.transform.SetParent(firePoint);
+            var projectile = ProjecttilePool.Instance.GetProjectile();
+            projectile.transform.position = firePoint.position;
+            projectile.transform.rotation = firePoint.rotation;
             projectile.layer = layer;
             var projecttileComponent = projectile.GetComponent<ProjectTile>();
             projecttileComponent.SetSpeed(_projecttileSpeed);
-            Destroy(projectile, _projecttileLifetime);
         }
     }
 }
