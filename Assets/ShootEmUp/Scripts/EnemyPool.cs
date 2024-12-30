@@ -57,6 +57,8 @@ namespace ShootEmUp
 
         private void OnPullOutOfPool(GameObject obj)
         {
+            Health health = obj.GetComponent<Health>();
+            health._currentHealth = health._maxHealth;
             obj.SetActive(true);
         }
         private void OnPutBackInPool(GameObject obj)
