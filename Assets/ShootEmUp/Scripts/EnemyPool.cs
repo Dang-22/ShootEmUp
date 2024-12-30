@@ -10,7 +10,7 @@ namespace ShootEmUp
     /// <summary>
     /// Enemy spawner 
     /// </summary>
-    public class EnemySpawner : MonoBehaviour
+    public class EnemyPool : MonoBehaviour
     {
         #region Fields
 
@@ -23,8 +23,8 @@ namespace ShootEmUp
         private EnemyFactory _enemyFactory;
         private float _spawnTimer;
         private int _enemySpawned;
-        private ObjectPool<GameObject> _pool;  
-
+        private ObjectPool<GameObject> _enemyPool;  
+        public EnemyPool Instance { get; private set; }
         #endregion
         #region Unity Methods
 
@@ -33,10 +33,18 @@ namespace ShootEmUp
         /// </summary>
         private void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
             //Get the component 
             _enemyFactory = new EnemyFactory();
             _spline = new List<SplineContainer>(GetComponentsInChildren<SplineContainer>());
-            _pool = new ObjectPool<GameObject>(SpawnEnemy, OnPullOutOfPool, OnPutBackInPool, defaultCapacity: 200);
+            _enemyPool = new ObjectPool<GameObject>(SpawnEnemy, OnPullOutOfPool, OnPutBackInPool, defaultCapacity: 200);
         }
         private void Update()
         {
@@ -69,7 +77,7 @@ namespace ShootEmUp
             _spawnTimer += Time.deltaTime;
             if (_enemySpawned < _maxEnemies && _spawnTimer >= _spawnInterval)
             {
-                GameObject _poolHoldderItem = _pool.Get();
+                GameObject _poolHoldderItem = GetFromPool();
                 _poolHoldderItem.transform.SetParent(_poolHoldder.transform);
                 _spawnTimer = 0f;
             }
@@ -86,7 +94,19 @@ namespace ShootEmUp
             _enemySpawned++;
             return enemy;
         }
+        #endregion
 
+        #region Public Methods
+
+        public void ReturnToPool(GameObject obj)
+        {
+            _enemyPool.Release(obj);
+        }
+
+        public GameObject GetFromPool()
+        {
+            return _enemyPool.Get();
+        }
         #endregion
     }
 }
