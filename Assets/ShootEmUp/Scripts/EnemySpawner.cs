@@ -12,6 +12,8 @@ namespace ShootEmUp
     /// </summary>
     public class EnemySpawner : MonoBehaviour
     {
+        #region Fields
+
         [SerializeField] private List<EnemyType> _enemiesTypes;
         [SerializeField] private int _maxEnemies = 18;
         [SerializeField] private float _spawnInterval = 1f;
@@ -22,6 +24,10 @@ namespace ShootEmUp
         private float _spawnTimer;
         private int _enemySpawned;
         private ObjectPool<GameObject> _pool;  
+
+        #endregion
+        #region Unity Methods
+
         /// <summary>
         /// 
         /// </summary>
@@ -32,6 +38,15 @@ namespace ShootEmUp
             _spline = new List<SplineContainer>(GetComponentsInChildren<SplineContainer>());
             _pool = new ObjectPool<GameObject>(SpawnEnemy, OnPullOutOfPool, OnPutBackInPool, defaultCapacity: 200);
         }
+        private void Update()
+        {
+            Spawner();
+            FollowCamera();
+        }
+
+        #endregion
+        #region Private Methods
+
         private void OnPullOutOfPool(GameObject obj)
         {
             obj.SetActive(true);
@@ -39,11 +54,6 @@ namespace ShootEmUp
         private void OnPutBackInPool(GameObject obj)
         {
             obj.gameObject.SetActive(false);
-        }
-        private void Update()
-        {
-            Spawner();
-            FollowCamera();
         }
         /// <summary>
         /// Follow the camera to sync spline 
@@ -76,5 +86,7 @@ namespace ShootEmUp
             _enemySpawned++;
             return enemy;
         }
+
+        #endregion
     }
 }

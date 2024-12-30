@@ -1,15 +1,35 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace ShootEmUp
 {
     public class ProjectTile : MonoBehaviour
     {
+        #region Fields
+
         [SerializeField] private float _speed;
         [SerializeField] private GameObject _muzzlePrefab;
         [SerializeField] private GameObject _hitPrefab;
         [SerializeField] private float _lifeTimeInterval = 2f;
         private float _lifeTimer;
+
+        #endregion
+        #region Unity Methods
+
+        private void Start()
+        {
+            SpawnProjectile();
+        }
+        private void Update()
+        {
+            MoveProjectile();
+            ExpireProjectile();
+        }
+
+        #endregion
+        #region Public Methods
+
         /// <summary>
         /// Set speed of the projecttile
         /// </summary>
@@ -19,12 +39,10 @@ namespace ShootEmUp
             _speed = speed;
         }
 
-        private void Start()
-        {
-            SpawnProjectile();
-        }
+        #endregion
+        #region Private Methods
 
-        public void SpawnProjectile()
+        private void SpawnProjectile()
         {
             if (_muzzlePrefab != null)
             {
@@ -33,10 +51,10 @@ namespace ShootEmUp
             }
         }
 
-        private void Update()
+
+        private void MoveProjectile()
         {
             transform.position += transform.up * (_speed * Time.deltaTime);
-            ExpireProjectile();
         }
 
         private void ExpireProjectile()
@@ -48,6 +66,10 @@ namespace ShootEmUp
                 _lifeTimer = 0;
             }
         }
+        
+
+        #endregion
+        #region Events
 
         /// <summary>
         /// If hit on collision we spawn effect and destroy the game object
@@ -62,33 +84,12 @@ namespace ShootEmUp
                 var ps = hitVFX.GetComponent<ParticleSystem>();
                 if (ps != null)
                 {
-                    ps = hitVFX.GetComponentInChildren<ParticleSystem>();
                     ps.Play();
-                }
-                if (!ps.isPlaying)
-                {
-                    VFXPool.Instance.ReleaseVFX(hitVFX);
                 }
             }
             ProjecttilePool.Instance.Release(gameObject);
-            
         }
-        /// <summary>
-        /// Destroy muzzle VFX at the end of effect
-        /// </summary>
-        /// <param name="muzzleVFX"></param>
-        private void DestroyParticleSystem(GameObject muzzleVFX)
-        {
-            var ps = muzzleVFX.GetComponent<ParticleSystem>();
-            if (ps != null)
-            {
-                ps = muzzleVFX.GetComponentInChildren<ParticleSystem>();
-            }
 
-            if (ps.main.duration <= 0)
-            {
-                VFXPool.Instance.ReleaseVFX(muzzleVFX);
-            }
-        }
+        #endregion
     }
 }

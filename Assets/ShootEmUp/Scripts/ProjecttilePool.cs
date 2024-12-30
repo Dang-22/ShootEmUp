@@ -8,9 +8,16 @@ namespace ShootEmUp
 {
     public class ProjecttilePool : MonoBehaviour
     {
+        #region Fields
+
         public static ProjecttilePool Instance { get; private set; }
         [SerializeField] private GameObject _projectilePrefab;
         private ObjectPool<GameObject> _enemyProjectilePool;
+
+        #endregion
+
+        #region Unity Methods
+
         private void Awake()
         {
             if (Instance == null)
@@ -26,6 +33,11 @@ namespace ShootEmUp
                 new ObjectPool<GameObject>(ProjectileSpawn, OnPullOutOfPool, OnPutBackInPool, defaultCapacity: 100);
             
         }
+
+        #endregion
+
+        #region Private Methods
+
         private GameObject ProjectileSpawn()
         {
             GameObject projectile = Instantiate(_projectilePrefab);
@@ -40,6 +52,11 @@ namespace ShootEmUp
         {
             obj.gameObject.SetActive(false);
         }
+        
+
+        #endregion
+
+        #region Public Methods
 
         public void Release(GameObject obj)
         {
@@ -49,5 +66,7 @@ namespace ShootEmUp
         {
             return _enemyProjectilePool.Get();
         }
+
+        #endregion
     }
 }
