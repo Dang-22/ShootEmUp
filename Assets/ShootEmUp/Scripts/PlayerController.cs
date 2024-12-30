@@ -38,6 +38,7 @@ namespace ShootEmUp
             ClampPlayerPositionToCameraView();
             SmoothPlayerMovement();
             RotatePlayerWhileMoving();
+            
         }
 
         #endregion
@@ -45,6 +46,10 @@ namespace ShootEmUp
         private void UpdateTargetPosition()
         {
             _targetPosition += new Vector3(_input.Move.x, _input.Move.y, 0f) * (_speed * Time.deltaTime);
+            if (transform.position.y > _minY)
+            {
+                _targetPosition -= Vector3.up * (_speed/2) * Time.deltaTime;
+            }
         }
         private void ClampPlayerPositionToCameraView()
         {

@@ -13,33 +13,32 @@ namespace ShootEmUp
         [SerializeField] private Transform[] _background;
         [SerializeField] private float _smoothing = 10f;
         [SerializeField] private float _multiplier = 15f;
+        [SerializeField] private float _speed = 1f;
         private Transform _mainCamera;
-        private Vector3 _previousCameraPos;
+        private Vector3 _defaultBackgroundPosition;
         
 
         #endregion
         #region Unity Methods
         private void Awake()
         {
-            _mainCamera = Camera.main.transform;
-        }
-
-        private void Start()
-        {
-            _previousCameraPos = _mainCamera.position;
+            _defaultBackgroundPosition = transform.position;
         }
 
         private void Update()
         {
-            for (int i = 0; i < _background.Length; i++)
+            if (transform.position.y <= 0)
             {
-                var parallax = (_previousCameraPos.y - _mainCamera.position.y) * (i * _multiplier);
-                var targetY = _background[i].position.y + parallax;
-                var targetPosition = new Vector3(_background[i].position.x, targetY, _background[i].position.z);
-                _background[i].position = Vector3.Lerp(_background[i].position, targetPosition, _smoothing * Time.deltaTime);
+                transform.position = new Vector3(transform.position.x, _defaultBackgroundPosition.y, transform.position.z);
+                
             }
-            _previousCameraPos = _mainCamera.position;
         }
+
+        private void LateUpdate()
+        {
+            transform.position -= Vector3.up * _speed * Time.deltaTime;
+        }
+
         #endregion
     }
 }
