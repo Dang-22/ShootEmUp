@@ -8,10 +8,12 @@ namespace ShootEmUp
     {
         #region Fields
 
-        [SerializeField] private float _speed;
+        
         [SerializeField] private GameObject _muzzlePrefab;
         [SerializeField] private GameObject _hitPrefab;
         [SerializeField] private float _lifeTimeInterval = 2f;
+        private float _speed;
+        private int _damage;
         private float _lifeTimer;
         private bool _isReleased = false;
 
@@ -38,6 +40,10 @@ namespace ShootEmUp
         public void SetSpeed(float speed)
         {
             _speed = speed;
+        }
+        public void SetDamage(int Damage)
+        {
+            _damage = Damage;
         }
 
         #endregion
@@ -92,6 +98,7 @@ namespace ShootEmUp
                     ps.Play();
                 }
             }
+            other.gameObject.GetComponent<Health>().TakeDamage(_damage);
             _isReleased = true;
             ProjecttilePool.Instance.Release(gameObject);
         }

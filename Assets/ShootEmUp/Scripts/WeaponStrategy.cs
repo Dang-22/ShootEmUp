@@ -62,6 +62,7 @@ namespace ShootEmUp
             if (projecttileComponent != null)
             {
                 projecttileComponent.SetSpeed(_projecttileSpeed);
+                projecttileComponent.SetDamage(_damage);
             }
         }
     }
