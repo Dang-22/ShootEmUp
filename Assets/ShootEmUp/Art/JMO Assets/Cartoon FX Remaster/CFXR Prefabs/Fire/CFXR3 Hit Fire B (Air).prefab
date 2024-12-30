@@ -4913,6 +4913,7 @@ GameObject:
   - component: {fileID: 2504214343621411456}
   - component: {fileID: 2504214343621411457}
   - component: {fileID: 4741991464754137355}
+  - component: {fileID: 7061803026138557422}
   m_Layer: 0
   m_Name: CFXR3 Hit Fire B (Air)
   m_TagString: Untagged
@@ -9817,7 +9818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9205bc1bbacc90040a998067b5643d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearBehavior: 2
+  clearBehavior: 0
   cameraShake:
     enabled: 0
     useMainCamera: 1
@@ -9950,6 +9951,19 @@ MonoBehaviour:
     perlinColor: 0
     perlinColorSpeed: 1
   fadeOutReference: {fileID: 2504214343621411456}
+--- !u!114 &7061803026138557422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2504214343621411470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de00158ca6b41659d2090c930ab83fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _particleSystem: {fileID: 2504214343621411456}
 --- !u!1 &6484188613129301618
 GameObject:
   m_ObjectHideFlags: 0
