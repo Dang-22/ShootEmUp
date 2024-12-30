@@ -5,9 +5,10 @@ namespace ShootEmUp
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] private Transform _player;
-        [SerializeField] private float _speed = 2f;
-
+        [SerializeField, Tooltip("Reference to the player's transform")] 
+        private Transform _player;
+        [SerializeField, Tooltip("Camera movement speed in units per second")] 
+        private float _speed = 2f;
         private void Start()
         {
             transform.position = new Vector3(_player.position.x, _player.position.y, transform.position.z);
