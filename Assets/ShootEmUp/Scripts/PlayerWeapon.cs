@@ -6,24 +6,28 @@ namespace ShootEmUp
     /// <summary>
     /// Player Weapon system based on logic at strategy
     /// </summary>
-    public class PlayerWeapon : Weapon
+    public class PlayerWeapon : WeaponBase
     {
-        private float _fireTimer;
+        #region Fields
+
         private InputReader _input;
+
+        #endregion
+        #region Unity 
 
         private void Awake()
         {
             _input = GetComponent<InputReader>();
         }
 
-        private void Update()
+        protected override void Update()
         {
-            _fireTimer += Time.deltaTime;
-            if (_input.Fire && _fireTimer >= _weaponStrategy.FireRate)
+            if (_input.Fire)
             {
-                _weaponStrategy.Fire(_firePoint, _layer);
-                _fireTimer = 0f;
+                base.Update();
             }
         }
+
+        #endregion
     }
 }

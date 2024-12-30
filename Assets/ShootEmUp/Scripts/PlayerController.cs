@@ -10,6 +10,7 @@ namespace ShootEmUp
     /// </summary>
     public class PlayerController : MonoBehaviour
     {
+        #region Fields
         [SerializeField] private float _speed = 5f;
         [SerializeField] private float _smoothness = 0.1f;
         [SerializeField] private float _leanAngle = 15f;
@@ -24,30 +25,50 @@ namespace ShootEmUp
         private InputReader _input;
         private Vector3 _currentVerlocity;
         private Vector3 _targetPosition;
+        #endregion
+        #region Unity Methods
 
         private void Start()
         {
             _input = GetComponent<InputReader>();
         }
-
         private void Update()
         {
+            UpdateTargetPosition();
+            ClampPlayerPositionToCameraView();
+            SmoothPlayerMovement();
+            RotatePlayerWhileMoving();
+        }
+
+        #endregion
+        #region Private Methods
+        private void UpdateTargetPosition()
+        {
             _targetPosition += new Vector3(_input.Move.x, _input.Move.y, 0f) * (_speed * Time.deltaTime);
-            // min, max player position based on camera view
+        }
+        private void ClampPlayerPositionToCameraView()
+        {
             var minPlayerX = _cameraFollow.position.x + _minX;
             var maxPlayerX = _cameraFollow.position.x + _maxX;
             var minPlayerY = _cameraFollow.position.y + _minY;
             var maxPlayerY = _cameraFollow.position.y + _maxY;
-            // Clamp player position to the cameraview
+
             _targetPosition.x = Mathf.Clamp(_targetPosition.x, minPlayerX, maxPlayerX);
             _targetPosition.y = Mathf.Clamp(_targetPosition.y, minPlayerY, maxPlayerY);
-            //lerp player position to target position
+        }
+
+        private void SmoothPlayerMovement()
+        {
             transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _currentVerlocity, _smoothness);
-            //rotate player while moving left-right 
+        }
+
+        private void RotatePlayerWhileMoving()
+        {
             var targetRotationAngle = -_input.Move.x * _leanAngle;
             var currentYrotation = transform.localEulerAngles.y;
             var newYrotation = Mathf.LerpAngle(currentYrotation, targetRotationAngle, _leanSpeed * Time.deltaTime);
             transform.localEulerAngles = new Vector3(0, newYrotation, 0);
         }
+        #endregion
     }
 }

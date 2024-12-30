@@ -9,17 +9,26 @@ namespace ShootEmUp
     // Enemy making scriptable object
     public class EnemyType : ScriptableObject
     {
+        #region Fields
         /// <summary>
         /// Enemy prefab (not required any component yet)
         /// </summary>
-        public GameObject EnemyPrefabs;
+        [SerializeField] private GameObject enemyPrefabs;
         /// <summary>
         /// TODO
         /// </summary>
-        public GameObject WeaponPrefab;
+        [SerializeField] private GameObject weaponPrefab;
         /// <summary>
         /// Enemy's speed
         /// </summary>
-        public float Speed;
+        [SerializeField] private float speed;
+        #endregion
+        #region Propeties
+
+        public GameObject EnemyPrefabs => enemyPrefabs;
+        public GameObject WeaponPrefab => weaponPrefab;
+        public float Speed => speed;
+
+        #endregion
     }
 }

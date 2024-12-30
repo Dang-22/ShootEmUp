@@ -8,6 +8,8 @@ namespace ShootEmUp
     /// </summary>
     public class EnemyFactory
     {
+        #region Public Methods
+
         /// <summary>
         /// Create, set component's value of the enemy object
         /// </summary>
@@ -22,5 +24,7 @@ namespace ShootEmUp
                 .SetSpeed(enemyType.Speed);
             return builder.Build();
         }
+
+        #endregion
     }
 }

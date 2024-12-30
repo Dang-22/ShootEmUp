@@ -9,10 +9,13 @@ namespace ShootEmUp
     /// </summary>
     public class EnemyBuilder
     {
+        #region Fields
         private GameObject _enemyPrefab;
         private SplineContainer _splineContainer;
         private GameObject _weaponPrefab;
         private float _speed;
+        #endregion
+        #region Public Methods
         /// <summary>
         /// Set the enemy builder base prefab
         /// </summary>
@@ -62,10 +65,12 @@ namespace ShootEmUp
             SplineAnimate splineAnimate = instance.GetOrAdd<SplineAnimate>();
             splineAnimate.Container = _splineContainer;
             splineAnimate.AnimationMethod = SplineAnimate.Method.Speed;
-            splineAnimate.ObjectUpAxis = SplineAnimate.AlignAxis.ZAxis;
+            splineAnimate.ObjectUpAxis = SplineComponent.AlignAxis.ZAxis;
             splineAnimate.MaxSpeed = _speed;
             instance.transform.position = _splineContainer.EvaluatePosition(0f);
             return instance;
         }
+
+        #endregion
     }
 }
