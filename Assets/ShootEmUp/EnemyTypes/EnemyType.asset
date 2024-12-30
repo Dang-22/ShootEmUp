@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c9d2399a8c4f178d7ad68f3e1a94e2, type: 3}
   m_Name: EnemyType
   m_EditorClassIdentifier: 
-  EnemyPrefabs: {fileID: 5394964673702396601, guid: 818f6dcfcb9c89f4c8b56a67a089afb9, type: 3}
-  WeaponPrefab: {fileID: 0}
-  Speed: 2
+  enemyPrefabs: {fileID: 5394964673702396601, guid: 818f6dcfcb9c89f4c8b56a67a089afb9, type: 3}
+  weaponPrefab: {fileID: 1637635808731128939, guid: fd59892dd288415459a09b1142de31c2, type: 3}
+  speed: 3
