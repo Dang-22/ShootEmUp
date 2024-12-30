@@ -13,6 +13,7 @@ namespace ShootEmUp
         [SerializeField] private GameObject _hitPrefab;
         [SerializeField] private float _lifeTimeInterval = 2f;
         private float _lifeTimer;
+        private bool _isReleased = false;
 
         #endregion
         #region Unity Methods
@@ -77,6 +78,10 @@ namespace ShootEmUp
         /// <param name="other"></param>
         private void OnCollisionEnter(Collision other)
         {
+            if (_isReleased)
+            {
+                return;
+            }
             if (_hitPrefab != null)
             {
                 ContactPoint contact = other.contacts[0];
@@ -87,7 +92,13 @@ namespace ShootEmUp
                     ps.Play();
                 }
             }
+            _isReleased = true;
             ProjecttilePool.Instance.Release(gameObject);
+        }
+
+        private void OnEnable()
+        {
+            _isReleased = false;
         }
 
         #endregion
